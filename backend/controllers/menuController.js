@@ -24,10 +24,18 @@ exports.addMenuItem = async (req, res) => {
 exports.getMenuByRestaurant = async (req, res) => {
   try {
     const menu = await MenuItem.findByRestaurantId(req.params.restaurant_id);
-    const categories = await MenuItem.getCategories(req.params.restaurant_id);
-    res.json({ success: true, categories, menu });
+
+    res.json({
+      success: true,
+      menu
+    });
+
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Error fetching menu', error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching menu",
+      error: err.message
+    });
   }
 };
 
