@@ -1,0 +1,16 @@
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_popular, is_vegetarian) VALUES
+(9, 'Sukuti', 'Smoked dried buffalo strips with fresh chili and onion', 280, 'Starters', TRUE, FALSE),
+(9, 'Chhoyela', 'Spicy grilled buffalo with mustard oil and herbs', 320, 'Starters', TRUE, FALSE),
+(9, 'Bara Set', 'Lentil patties with achar and spicy meat topping', 180, 'Snacks', TRUE, FALSE),
+(9, 'Aalu Tama Bodi', 'Potato, bamboo shoots and black-eyed peas curry', 270, 'Mains', FALSE, TRUE),
+(9, 'Masala Tea', 'Spiced milk tea with a Newari twist', 90, 'Drinks', FALSE, TRUE),
+(10, 'Yomari', 'Sweet rice flour dumplings filled with molasses', 150, 'Desserts', TRUE, TRUE),
+(10, 'Aalu Papa', 'Potatoes and bamboo shoots in spicy gravy', 240, 'Mains', TRUE, TRUE),
+(10, 'Bara Tarkari', 'Lentil patties with mixed veggie curry', 210, 'Combos', FALSE, TRUE),
+(10, 'Mula Achaar', 'Radish pickle with sesame seeds', 70, 'Sides', FALSE, TRUE),
+(10, 'Butter Tea', 'Traditional salted tea', 80, 'Drinks', FALSE, TRUE),
+(11, 'Choila', 'Grilled spiced chicken with achar and beaten rice', 280, 'Starters', TRUE, FALSE),
+(11, 'Baahadur Set', 'Mixed meat platter with bhat and achar', 480, 'Set Meals', TRUE, FALSE),
+(11, 'Bhangko Jhol', 'Smoked meat stew with herbs', 340, 'Mains', FALSE, FALSE),
+(11, 'Masu Bhaye', 'Pork curry with traditional spices', 360, 'Mains', TRUE, FALSE),
+(11, 'Masala Chiya', 'Spiced tea with milk', 90, 'Drinks', FALSE, TRUE);
