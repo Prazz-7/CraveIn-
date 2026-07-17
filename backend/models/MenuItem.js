@@ -43,7 +43,7 @@ class MenuItem {
       let query = 'UPDATE menu_items SET ';
       const values = [];
       Object.keys(data).forEach((key, index) => {
-        query += `\${ key} = ?`;
+       query += `${key} = ?`;
         values.push(data[key]);
         if (index < Object.keys(data).length - 1) query += ', ';
       });
