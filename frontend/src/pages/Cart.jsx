@@ -162,6 +162,35 @@ export default function Cart() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Order failed');
+
+      if (payment === 'eSewa') {
+        // Cart is cleared now since the order already exists (as "pending
+        // payment"); the browser is about to leave the page for eSewa's
+        // sandbox payment form.
+        clearCart();
+        const initRes = await fetch('/api/payments/esewa/initiate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ orderId: data.id }),
+        });
+        const initData = await initRes.json();
+        if (!initRes.ok) throw new Error(initData.error || 'Could not start eSewa payment');
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = initData.formUrl;
+        Object.entries(initData.fields).forEach(([key, value]) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          form.appendChild(input);
+        });
+        document.body.appendChild(form);
+        form.submit();
+        return;
+      }
+
       clearCart();
       navigate(`/orders/${data.id}`);
     } catch (err) {

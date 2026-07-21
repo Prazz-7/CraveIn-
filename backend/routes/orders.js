@@ -63,9 +63,12 @@ router.post('/', async (req, res) => {
     }
     const totalAmount = subtotal + DELIVERY_FEE;
     const eta = new Date(Date.now() + 45 * 60 * 1000);
+    // Cash on Delivery is "paid" at delivery time by convention; online
+    // gateways (eSewa, Khalti) start as pending until the gateway confirms payment.
+    const paymentStatus = paymentMethod === 'Cash on Delivery' ? 'paid' : 'pending';
     const [orderResult] = await pool.query(
-      'INSERT INTO orders (user_id, status, total_amount, delivery_fee, delivery_address, delivery_lat, delivery_lng, payment_method, estimated_delivery) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [userId, 'placed', totalAmount, DELIVERY_FEE, addressForOrder, latitude, longitude, paymentMethod, eta]
+      'INSERT INTO orders (user_id, status, total_amount, delivery_fee, delivery_address, delivery_lat, delivery_lng, payment_method, payment_status, estimated_delivery) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [userId, 'placed', totalAmount, DELIVERY_FEE, addressForOrder, latitude, longitude, paymentMethod, paymentStatus, eta]
     );
     const orderId = orderResult.insertId;
     for (const item of items) {
