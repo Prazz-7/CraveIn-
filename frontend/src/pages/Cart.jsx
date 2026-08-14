@@ -167,6 +167,8 @@ export default function Cart() {
         // Cart is cleared now since the order already exists (as "pending
         // payment"); the browser is about to leave the page for eSewa's
         // sandbox payment form.
+        // Persist last order id so user can track it from other pages (per-tab)
+        try { sessionStorage.setItem('lastOrderId', String(data.id)); } catch (e) {}
         clearCart();
         const initRes = await fetch('/api/payments/esewa/initiate', {
           method: 'POST',
@@ -175,6 +177,12 @@ export default function Cart() {
         });
         const initData = await initRes.json();
         if (!initRes.ok) throw new Error(initData.error || 'Could not start eSewa payment');
+        // persist the pending esewa payment so failure redirect can cancel the order
+        try {
+          localStorage.setItem('pendingEswa', JSON.stringify({ orderId: data.id, transactionUuid: initData.fields.transaction_uuid }));
+        } catch (e) {
+          // ignore localStorage errors
+        }
 
         const form = document.createElement('form');
         form.method = 'POST';
@@ -191,6 +199,7 @@ export default function Cart() {
         return;
       }
 
+      try { sessionStorage.setItem('lastOrderId', String(data.id)); } catch (e) {}
       clearCart();
       navigate(`/orders/${data.id}`);
     } catch (err) {
@@ -288,7 +297,7 @@ export default function Cart() {
               <select className="form-input form-select" value={payment} onChange={e => setPayment(e.target.value)}>
                 <option>Cash on Delivery</option>
                 <option>eSewa</option>
-                <option>Khalti</option>
+                {/* <option>Khalti</option> */}
               </select>
             </div>
             <div className="separator" />

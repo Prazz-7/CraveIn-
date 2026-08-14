@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const STATUS_COLOR = { placed:'badge-gray', confirmed:'badge-primary', preparing:'badge-primary', 'out for delivery':'badge-green', delivered:'badge-green', cancelled:'badge-red' };
+const STATUS_COLOR = { placed:'badge-gray', confirmed:'badge-primary', preparing:'badge-primary', 'out for delivery':'badge-green', delivered:'badge-green', cancelled:'badge-red', rejected:'badge-red' };
 
 export default function Orders() {
   const { isAuthenticated, token } = useAuth();
