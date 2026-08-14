@@ -4,7 +4,7 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => localStorage.getItem('cravein-token'));
+  const [token, setToken] = useState(() => sessionStorage.getItem('cravein-token'));
 
   useEffect(() => {
     if (token) {
@@ -22,7 +22,8 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Login failed');
-    localStorage.setItem('cravein-token', data.token);
+    sessionStorage.setItem('cravein-token', data.token);
+    sessionStorage.setItem('cravein-show-login-popup', '1');
     setToken(data.token);
     setUser(data.user);
     return data;
@@ -35,14 +36,17 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Registration failed');
-    localStorage.setItem('cravein-token', data.token);
+    sessionStorage.setItem('cravein-token', data.token);
+    sessionStorage.setItem('cravein-show-signup-popup', '1');
     setToken(data.token);
     setUser(data.user);
     return data;
   };
 
   const logout = () => {
-    localStorage.removeItem('cravein-token');
+    // Show logout popup for customers
+    try { sessionStorage.setItem('cravein-show-logout-popup', '1'); } catch (e) {}
+    sessionStorage.removeItem('cravein-token');
     setToken(null);
     setUser(null);
   };
