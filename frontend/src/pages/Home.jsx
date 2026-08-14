@@ -57,7 +57,7 @@ export default function Home() {
             Kathmandu's First Multi-Restaurant App
           </div>
           <h1 className="hero-title">
-            Mix <span className="hero-highlight">Momos</span> &amp; <span style={{ color: '#f59e0b' }}>Chowmein</span>.<br />One Order.
+            Mix <span className="hero-highlight">Multiple</span> &amp; <span style={{ color: '#f59e0b' }}>Cuisine</span>.<br />One Order.
           </h1>
           <p className="hero-sub">Refuse to compromise. Order from multiple nearby restaurants in a single cart with just one delivery fee.</p>
           <form className="hero-search" onSubmit={handleSearch}>
@@ -71,7 +71,7 @@ export default function Home() {
         <section className="section">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1rem', marginBottom: '3rem' }}>
             {[['🍱','Multi-Restaurant Cart','Add items from different restaurants in one order'],
-              ['💰','One Delivery Fee','Pay NPR 80 flat — no matter how many restaurants'],
+              ['💰','One Delivery Fee','No matter how many restaurants'],
               ['⚡','35 Min Avg Delivery','Fast delivery across Kathmandu Valley']
             ].map(([icon,title,desc]) => (
               <div key={title} className="card card-body" style={{ textAlign: 'center' }}>
