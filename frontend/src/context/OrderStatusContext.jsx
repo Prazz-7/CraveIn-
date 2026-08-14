@@ -1,23 +1,12 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
-import { useToast } from '../components/Toast.jsx';
 
 const OrderStatusContext = createContext({ activeOrders: [] });
 
-const STATUS_MESSAGES = {
-  confirmed:          { emoji: '✅', title: 'Order confirmed!',        description: 'The restaurant received your order.' },
-  preparing:          { emoji: '👨‍🍳', title: 'Now preparing your food', description: 'Your food is being cooked fresh right now.' },
-  'out for delivery': { emoji: '🛵', title: 'Out for delivery!',        description: 'Your rider is on the way.' },
-  delivered:          { emoji: '🎉', title: 'Order delivered!',         description: 'Enjoy your meal!' },
-};
-
-const isActiveOrder = order => !['delivered', 'cancelled'].includes(order.status?.toLowerCase());
+const isActiveOrder = order => !['delivered', 'cancelled', 'rejected'].includes(order.status?.toLowerCase());
 
 export function OrderStatusProvider({ children }) {
   const { isAuthenticated, token } = useAuth();
-  const { toast } = useToast();
-  const navigate = useNavigate();
   const [activeOrders, setActiveOrders] = useState([]);
   const lastStatusRef = useRef({});
   const initializedRef = useRef(false);
@@ -57,18 +46,6 @@ export function OrderStatusProvider({ children }) {
           initializedRef.current = true;
         } else {
           active.forEach(o => {
-            const prev = lastStatusRef.current[o.id];
-            if (prev !== undefined && prev !== o.status) {
-              const msg = STATUS_MESSAGES[o.status?.toLowerCase()];
-              if (msg) {
-                toast({
-                  title: `${msg.emoji} ${msg.title}`,
-                  description: msg.description,
-                  duration: 6000,
-                  action: { label: 'Track', onClick: () => navigate(`/orders/${o.id}`) },
-                });
-              }
-            }
             lastStatusRef.current[o.id] = o.status;
           });
         }
@@ -95,7 +72,7 @@ export function OrderStatusProvider({ children }) {
       cancelled = true;
       clearPolling();
     };
-  }, [isAuthenticated, token, toast, navigate]);
+  }, [isAuthenticated, token]);
 
   return (
     <OrderStatusContext.Provider value={{ activeOrders }}>
