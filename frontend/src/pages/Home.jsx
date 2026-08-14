@@ -42,6 +42,8 @@ export default function Home() {
       .catch(() => {});
   }, []);
 
+  // Home no longer manages track button; ActiveOrderButton provides a unified floating button.
+
   const handleSearch = e => {
     e.preventDefault();
     if (search.trim()) navigate(`/restaurants?search=${encodeURIComponent(search)}`);
@@ -57,13 +59,14 @@ export default function Home() {
             Kathmandu's First Multi-Restaurant App
           </div>
           <h1 className="hero-title">
-            Mix <span className="hero-highlight">Momos</span> &amp; <span style={{ color: '#f59e0b' }}>Chowmein</span>.<br />One Order.
+            Mix <span className="hero-highlight">Multiple</span> <span style={{ color: '#f59e0b' }}>Cuisines</span>.<br />One Order.
           </h1>
           <p className="hero-sub">Refuse to compromise. Order from multiple nearby restaurants in a single cart with just one delivery fee.</p>
           <form className="hero-search" onSubmit={handleSearch}>
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="What are you craving?" />
             <button type="submit">Search</button>
           </form>
+          {/* Floating track button moved to bottom-right fixed position */}
         </div>
       </section>
 
@@ -71,7 +74,7 @@ export default function Home() {
         <section className="section">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1rem', marginBottom: '3rem' }}>
             {[['🍱','Multi-Restaurant Cart','Add items from different restaurants in one order'],
-              ['💰','One Delivery Fee','Pay NPR 80 flat — no matter how many restaurants'],
+              ['💰','One Delivery Fee','No matter how many restaurants'],
               ['⚡','35 Min Avg Delivery','Fast delivery across Kathmandu Valley']
             ].map(([icon,title,desc]) => (
               <div key={title} className="card card-body" style={{ textAlign: 'center' }}>
@@ -94,6 +97,7 @@ export default function Home() {
           </div>
         </section>
       </div>
+      {/* ActiveOrderButton renders the unified floating track button */}
     </>
   );
 }
