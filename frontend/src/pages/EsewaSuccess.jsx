@@ -31,6 +31,7 @@ export default function EsewaSuccess() {
       .then(body => {
         setStatus('success');
         setOrderId(body.orderId);
+        try { localStorage.removeItem('pendingEswa'); } catch (e) {}
       })
       .catch(err => {
         setStatus('error');
