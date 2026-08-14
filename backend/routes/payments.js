@@ -90,7 +90,8 @@ router.post('/esewa/verify', async (req, res) => {
     const order = orders[0];
 
     if (status !== 'COMPLETE') {
-      await pool.query('UPDATE orders SET payment_status = ? WHERE id = ?', ['failed', order.id]);
+      await pool.query('UPDATE orders SET payment_status = ?, status = ? WHERE id = ?', ['failed', 'cancelled', order.id]);
+      await pool.query('UPDATE order_items SET status = ? WHERE order_id = ?', ['cancelled', order.id]);
       return res.status(400).json({ error: 'Payment was not completed', order: { id: order.id } });
     }
 
@@ -100,7 +101,8 @@ router.post('/esewa/verify', async (req, res) => {
     const statusData = await statusRes.json();
 
     if (statusData.status !== 'COMPLETE') {
-      await pool.query('UPDATE orders SET payment_status = ? WHERE id = ?', ['failed', order.id]);
+      await pool.query('UPDATE orders SET payment_status = ?, status = ? WHERE id = ?', ['failed', 'cancelled', order.id]);
+      await pool.query('UPDATE order_items SET status = ? WHERE order_id = ?', ['cancelled', order.id]);
       return res.status(400).json({ error: 'eSewa could not confirm this payment', order: { id: order.id } });
     }
 
